@@ -24,7 +24,7 @@ class Instagram:
         self.driver.find_element(By.NAME, "username").send_keys(self.email)
         self.driver.find_element(By.NAME, "password").send_keys(self.pass_)
         self.driver.find_element(By.XPATH,'/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/section/main/article/div[2]/div[1]/div[2]/form/div/div[3]/button/div').click()
-        time.sleep(5)
+        time.sleep(15)
     
     def search_accounts(self, account_username):
         '''Takes one required argument account_username:type(str)
@@ -98,40 +98,57 @@ class Instagram:
         self.driver.quit()
 
     def follow(self, username):
-        self.driver.get("https://www.instagram.com/" + username)
-        time.sleep(3)
-        followbtn = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/div[1]/div[2]/section/main/div/header/section/div[1]/div[1]/div/div/button')
-        followbtn.click()
+        try:
+            self.driver.get("https://www.instagram.com/" + username)
+            time.sleep(40)
+            # followbtn = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/div[1]/div[2]/section/main/div/header/section/div[1]/div[1]/div/div/button')
+            # followbtn = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/div[1]/div[2]/section/main/div/header/section/div[1]/div[1]/div/div[1]/button')
+            followbtn = self.driver.find_element(By.XPATH, "//*[text()='Follow']")
+            followbtn.click()
+            time.sleep(5)
+        except:
+            print("we cant follow account = "+ username)
+        
 
 
 
-    def like_post(self, username, like_count):
-        self.driver.get("https://www.instagram.com/" + username)
-        time.sleep(5)
-        countS = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/div[1]/div[2]/section/main/div/header/section/ul/li[1]/div/span/span').text
-        count = countS.replace(',','')
-        if like_post > count and like_post != 0:
-            countt = count
-        else:
-            countt = like_post
+    def like_post(self, username):
 
-        first_post = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/div[1]/div[2]/section/main/div/div[3]/article/div[1]/div/div[1]/div[1]/a')
-        first_post.click()
-        time.sleep(3)
-        next_button = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[1]/div/div/div/button')
-        next_button.click()
+        try:
+            like_post = 5
+            self.driver.get("https://www.instagram.com/" + username)
+            time.sleep(10)
+            countS = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/div[1]/div[2]/section/main/div/header/section/ul/li[1]/div/span/span').text
+            count = int(countS.replace(',',''))
+            if(count == 0):
+                return
+            if like_post > count and like_post != 0:
+                countt = count
+            else:
+                countt = like_post
 
-        for x in range(countt):
-            print('in loop')
-            print(x)
-            like_button = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[2]/div/article/div/div[2]/div/div/div[2]/section[1]/span[1]/button')
-            like_button.click()
-            time.sleep(2)
-            next_button = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[1]/div/div/div[2]/button')
+            first_post = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/div[1]/div[2]/section/main/div/div[3]/article/div[1]/div/div[1]/div[1]/a')
+            first_post.click()
+            time.sleep(7)
+            # next_button = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[1]/div/div/div/button')
+            next_button = self.driver.find_element(By.XPATH, "//a[@role='button']/span[text()='Like']/..")
             next_button.click()
-            time.sleep(3)
 
-        print('done')
+            for x in range(countt):
+                print('in loop')
+                print(x)
+                like_button = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[2]/div/article/div/div[2]/div/div/div[2]/section[1]/span[1]/button')
+                like_button.click()
+                time.sleep(2)
+                next_button = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[1]/div/div/div[2]/button')
+                next_button.click()
+                time.sleep(3)
+
+            print('done')
+        except:
+            print("we cant like post for account = " + username)
+            
+        
 
 
 

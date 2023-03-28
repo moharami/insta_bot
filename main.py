@@ -1,22 +1,32 @@
 from insta import Instagram
+from text import Text
+from decouple import config
 import os
 
 driver_path = "C:\\chromedriver.exe"
-email = "g.s.travel.agency"
-password = "Ghasedak388"
+
+
+email = config('email')
+password = config('password')
+
+
+file_name = './data/' + config('email') + '/to_follow.txt'
+
 
 insta = Instagram(webdriver_path=driver_path, email=email, pass_=password)
 insta.login()
 
-# Searching a specific account with similiar content like mine and following the people who
-# who follows that account
-# insta.search_accounts(account_username="asemanehaftom_agency")
-# insta.followerpage(account_username="asemanehaftom_agency")
 
-# insta.follow("matin.mira")
-insta.like_post("canpars")
 
-# # unfollow every one
-# insta.unfollow()
+
+for x in range(1):
+	account = Text.readfirst(file = file_name)
+	print(account)
+
+	# insta.like_post(account)
+	insta.follow(account)
+
+	print(account)
+	Text.deletefirst(file = file_name)
 
 insta.close_window()
