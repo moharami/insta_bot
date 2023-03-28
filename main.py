@@ -3,6 +3,8 @@ from text import Text
 from decouple import config
 import os
 
+
+
 driver_path = "C:\\chromedriver.exe"
 
 
@@ -19,14 +21,12 @@ insta.login()
 
 
 
-for x in range(1):
+for x in range(int(config('count_of_follow'))):
 	account = Text.readfirst(file = file_name)
-	print(account)
 
-	# insta.like_post(account)
+	insta.like_post(account)
 	insta.follow(account)
 
-	print(account)
 	Text.deletefirst(file = file_name)
 
 insta.close_window()
